@@ -112,16 +112,16 @@ Ejercicios
 	* Incremento del nivel potencia en dB, respecto al nivel correspondiente al silencio inicial, para
 	  estar seguros de que un segmento de señal se corresponde con voz.
 
-	Unos 20 dB
+	***Unos 20 dB***
 
 	* Duración mínima razonable de los segmentos de voz y silencio.
 
-	Voz: unos 500 ms
-	Silencio: unos 100 ms
+	***Voz: unos 500 ms***
+	***Silencio: unos 100 ms***
 
 	* ¿Es capaz de sacar alguna conclusión a partir de la evolución de la tasa de cruces por cero?
 
-	La tasa de cruces por zero es más elevada en las fricativas sordas que en el ruido de fondo, así que puede ser útil para distingir ambos.
+	***La tasa de cruces por zero es más elevada en las fricativas sordas que en el ruido de fondo, así que puede ser útil para distingir ambos.***
 
 ### Desarrollo del detector de actividad vocal
 
@@ -134,6 +134,8 @@ Ejercicios
 <img src="p2_ws_vad.png" width="800" align="center">
 
 - Explique, si existen. las discrepancias entre el etiquetado manual y la detección automática.
+
+***Existen algunas discrepancias debido a que el programa no funciona perfectamente. Concretamente hay un silencio que la detección automática no detecta y otro que detecta cuando no debería.***
 
 - Evalúe los resultados sobre la base de datos `db.v4` con el script `vad_evaluation.pl` e inserte a 
   continuación las tasas de sensibilidad (*recall*) y precisión para el conjunto de la base de datos (sólo

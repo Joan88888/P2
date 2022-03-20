@@ -65,12 +65,6 @@ VAD_DATA * vad_open(float rate, float a0, float a1, float a2, float min_zcr, flo
   vad_data->min_zcr = min_zcr;
   vad_data->min_silence_time = min_silence_time;
   vad_data->max_mv_time = max_mv_time;
-  /*vad_data->a0 = 4;
-  vad_data->a1 = 6.7;
-  vad_data->a2 = 11.1;
-  vad_data->min_zcr = 50;
-  vad_data->min_silence_time = 11;
-  vad_data->max_mv_time = 10;*/
   vad_data->amplitude0 = 0.00095;
   return vad_data;
 }
@@ -79,7 +73,7 @@ VAD_STATE vad_close(VAD_DATA *vad_data) {
   /* 
    * TODO: decide what to do with the last undecided frames
    */
-  VAD_STATE state = ST_SILENCE;
+  VAD_STATE state = vad_data->state;
 
   free(vad_data);
   return state;
