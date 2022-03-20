@@ -54,14 +54,17 @@ Features compute_features(const float *x, int N) {
  * TODO: Init the values of vad_data
  */
 
-VAD_DATA * vad_open(float rate, float a0, float a1, float a2) {
+VAD_DATA * vad_open(float rate, float a0, float a1, float a2, float min_zcr, float min_silence_time, float max_mv_time) {
   VAD_DATA *vad_data = malloc(sizeof(VAD_DATA));
   vad_data->state = ST_INIT;
   vad_data->sampling_rate = rate;
   vad_data->frame_length = rate * FRAME_TIME * 1e-3;
-  vad_data->a0 = a0; //4
-  vad_data->a1 = a1; //6
-  vad_data->a2 = a2; //12
+  vad_data->a0 = a0;
+  vad_data->a1 = a1;
+  vad_data->a2 = a2;
+  vad_data->min_zcr = min_zcr;
+  vad_data->min_silence_time = min_silence_time;
+  vad_data->max_mv_time = max_mv_time;
   return vad_data;
 }
 
@@ -96,21 +99,15 @@ VAD_STATE vad(VAD_DATA *vad_data, float *x) {
 
   switch (vad_data->state) {
   case ST_INIT:    
-    if(f.p > vad_data->k0 + vad_data->a0 && f.zcr > 70 && vad_data->N != 0) {
+    if(f.p > vad_data->k0 + vad_data->a0 && f.zcr > vad_data->min_zcr && vad_data->N != 0) {
       vad_data->k1 = vad_data->k0 + vad_data->a1;
       vad_data->k2 = vad_data->k0 + vad_data->a2;
-      //printf("k0 = %f   a0 = %f   k1 = %f   a1 = %f   k2 = %f   a2 = %f",
-      //vad_data->k0, vad_data->a0, vad_data->k1, vad_data->a1, vad_data->k2, vad_data->a2);
       vad_data->state = ST_MAYBE_VOICE;
       break;
     }
     vad_data->pot += pow(10,f.p/10);
     vad_data->N++;
     vad_data->k0 = 10*log10(vad_data->pot/vad_data->N);
-    /*vad_data->k0 = f.p;
-    vad_data->k1 = vad_data->k0 + 8;
-    vad_data->k2 = vad_data->k0 + 12;
-    vad_data->state = ST_SILENCE;*/
     break;
 
   case ST_SILENCE:
@@ -125,11 +122,11 @@ VAD_STATE vad(VAD_DATA *vad_data, float *x) {
 
   case ST_MAYBE_SILENCE:
     vad_data->silence_time++;
-    if(vad_data->silence_time > 11) {
+    if(vad_data->silence_time > vad_data->min_silence_time) {
         vad_data->state = ST_SILENCE;
         vad_data->silence_time = 0;
     }
-    if (f.p > vad_data->k1 && f.zcr > 70)
+    if (f.p > vad_data->k1 && f.zcr > vad_data->min_zcr)
       vad_data->state = ST_VOICE;
     break;
 
@@ -137,7 +134,7 @@ VAD_STATE vad(VAD_DATA *vad_data, float *x) {
     vad_data->voice_time++;
     if(f.p > vad_data->k2)
       vad_data->state = ST_VOICE;
-    else if(vad_data->voice_time > 6) {
+    else if(vad_data->voice_time > vad_data->max_mv_time) {
       vad_data->state = ST_SILENCE;
       vad_data->voice_time = 0;
     }

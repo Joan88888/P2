@@ -6,12 +6,15 @@ Usage:
    vad --version
 
 Options:
-   -i FILE, --input-wav=FILE   WAVE file for voice activity detection
-   -o FILE, --output-vad=FILE  Label file with the result of VAD
-   -w FILE, --output-wav=FILE  WAVE file with silences cleared
-   -0 FLOAT, --a0=FLOAT        Increment per determinar el llindar inicial
-   -1 FLOAT, --a1=FLOAT        Increment per determinar el llindar k1
-   -2 FLOAT, --a2=FLOAT        Increment per determinar el llindar k2
+   -i FILE, --input-wav=FILE     WAVE file for voice activity detection
+   -o FILE, --output-vad=FILE    Label file with the result of VAD
+   -w FILE, --output-wav=FILE    WAVE file with silences cleared
+   -0 FLOAT, --a0=FLOAT          Increment per determinar el llindar inicial
+   -1 FLOAT, --a1=FLOAT          Increment per determinar el llindar k1
+   -2 FLOAT, --a2=FLOAT          Increment per determinar el llindar k2
+   -z FLOAT, --min_zcr=FLOAT     Nivell mínim de zcr per considerar veu
+   -s FLOAT, --min_silence_time  Temps mínim de maybe silence per considerar silenci
+   -m FLOAT, --max_mv_time       Temps màxim de maybe voice abans de tornar a silenci
    -v, --verbose  Show debug information
    -h, --help     Show this screen
    --version      Show the version of the project

@@ -16,6 +16,8 @@ int main(int argc, char *argv[]) {
   FILE *vadfile;
   int n_read = 0, i;
 
+  int n_written = 0;
+
   VAD_DATA *vad_data;
   VAD_STATE state, last_state;
 
@@ -26,7 +28,7 @@ int main(int argc, char *argv[]) {
 
   char	*input_wav, *output_vad, *output_wav;
 
-  float a0, a1, a2;
+  float a0, a1, a2, min_zcr, min_silence_time, max_mv_time;
 
   DocoptArgs args = docopt(argc, argv, /* help */ 1, /* version */ "2.0");
 
@@ -37,6 +39,9 @@ int main(int argc, char *argv[]) {
   a0 = atof(args.a0);
   a1 = atof(args.a1);
   a2 = atof(args.a2);
+  min_zcr = atof(args.min_zcr);
+  min_silence_time = atof(args.min_silence_time);
+  max_mv_time = atof(args.max_mv_time);
 
   if (input_wav == 0 || output_vad == 0) {
     fprintf(stderr, "%s\n", args.usage_pattern);
@@ -68,7 +73,7 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  vad_data = vad_open(sf_info.samplerate, a0, a1, a2);
+  vad_data = vad_open(sf_info.samplerate, a0, a1, a2, min_zcr, min_silence_time, max_mv_time);
   /* Allocate memory for buffers */
   frame_size   = vad_frame_size(vad_data);
   buffer       = (float *) malloc(frame_size * sizeof(float));
@@ -84,6 +89,7 @@ int main(int argc, char *argv[]) {
 
     if (sndfile_out != 0) {
       /* TODO: copy all the samples into sndfile_out */
+      n_written = sf_write_float(sndfile_out, buffer, frame_size);
     }
 
     state = vad(vad_data, buffer);
@@ -100,6 +106,7 @@ int main(int argc, char *argv[]) {
 
     if (sndfile_out != 0) {
       /* TODO: go back and write zeros in silence segments */
+      
     }
   }
 
