@@ -1,4 +1,4 @@
-!/bin/bash
+# !/bin/bash
 if [ $# -ne 6 ]; then
     echo usage: $0 a0 a1 a2 min_zcr min_silence_time max_mv_time
     exit -1

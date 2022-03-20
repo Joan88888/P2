@@ -16,7 +16,7 @@ typedef struct {
   float sampling_rate;
   unsigned int frame_length;
   float last_feature; /* for debuggin purposes */
-  float k0, k1, k2, a0, a1, a2, pot, N, silence_time, voice_time, min_zcr, min_silence_time, max_mv_time;
+  float k0, k1, k2, a0, a1, a2, pot, N, silence_time, voice_time, min_zcr, min_silence_time, max_mv_time, amplitude0;
 } VAD_DATA;
 
 /* Call this function before using VAD: 
