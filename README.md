@@ -135,7 +135,7 @@ Ejercicios
 
 - Explique, si existen. las discrepancias entre el etiquetado manual y la detección automática.
 
-***Existen algunas discrepancias debido a que el programa no funciona perfectamente. Concretamente hay un silencio que la detección automática no detecta y otro que detecta cuando no debería.***
+***Existen algunas discrepancias debido a que el programa no funciona perfectamente. Concretamente hay un silencio que la detección automática no detecta y otro que detecta cuando no debería. A parte, por algun error que no hemos podido encontrar, la transcripción no termina con silencio como debería***
 
 - Evalúe los resultados sobre la base de datos `db.v4` con el script `vad_evaluation.pl` e inserte a 
   continuación las tasas de sensibilidad (*recall*) y precisión para el conjunto de la base de datos (sólo
@@ -150,6 +150,8 @@ Ejercicios
 - Si ha desarrollado el algoritmo para la cancelación de los segmentos de silencio, inserte una gráfica en
   la que se vea con claridad la señal antes y después de la cancelación (puede que `wavesurfer` no sea la
   mejor opción para esto, ya que no es capaz de visualizar varias señales al mismo tiempo).
+
+<img src="p2_zeros.png" width="800" align="center">
 
 #### Gestión de las opciones del programa usando `docopt_c`
 
